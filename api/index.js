@@ -14,7 +14,9 @@ dotenv.config();
 const app = express();
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
-
+app.use(cors({
+  origin: import.meta.env.VITE_API_BASE_URL
+}));
 app.get('/', (req, res) => {
   res.send("Server is running");
 });
