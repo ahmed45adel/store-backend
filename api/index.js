@@ -12,9 +12,8 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
-// const cors = require("cors");
 const corsConfig = {
-  origin: "*", Credential: true, methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]};
+  origin: "https://store-frontend-rose.vercel.app", Credential: true, methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]};
 app.options("*", cors(corsConfig)); // Pre-flight request for all routes
 app.use(cors(corsConfig));
 app.use(express.json({ limit: "10mb" }));
