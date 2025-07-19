@@ -8,20 +8,17 @@ import couponRoutes from "../routes/coupon.route.js";
 import paymentRoutes from "../routes/payment.route.js";
 import analyticsRoutes from "../routes/analytics.route.js";
 import { connectDB } from "../lib/db.js";
-
+import cors from "cors";
 dotenv.config();
 
 const app = express();
-const cors = require("cors");
+// const cors = require("cors");
 const corsConfig = {
   origin: "*", Credential: true, methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]};
 app.options("*", cors(corsConfig)); // Pre-flight request for all routes
 app.use(cors(corsConfig));
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
-// app.use(cors({
-//   origin: import.meta.env.VITE_API_BASE_URL
-// }));
 app.get('/', (req, res) => {
   res.send("Server is running");
 });
