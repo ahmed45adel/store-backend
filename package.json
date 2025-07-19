@@ -10,10 +10,6 @@
 	"keywords": [],
 	"author": "",
 	"type": "module",
-	"engines": {
-    		"node": "20.x",
-    		"npm": "10.x"
-  		},
 	"license": "ISC",
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
