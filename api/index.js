@@ -13,7 +13,9 @@ dotenv.config();
 
 const app = express();
 const cors = require("cors");
-app.use(cors());
+const corsConfig = {
+  origin: "*", Credential: true, methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]};
+app.use(cors(corsConfig));
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 // app.use(cors({
