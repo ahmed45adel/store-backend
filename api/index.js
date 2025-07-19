@@ -12,11 +12,13 @@ import { connectDB } from "../lib/db.js";
 dotenv.config();
 
 const app = express();
+const cors = require("cors");
+app.use(cors());
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
-app.use(cors({
-  origin: import.meta.env.VITE_API_BASE_URL
-}));
+// app.use(cors({
+//   origin: import.meta.env.VITE_API_BASE_URL
+// }));
 app.get('/', (req, res) => {
   res.send("Server is running");
 });
