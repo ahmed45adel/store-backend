@@ -15,6 +15,7 @@ const app = express();
 const cors = require("cors");
 const corsConfig = {
   origin: "*", Credential: true, methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]};
+app.options("*", cors(corsConfig)); // Pre-flight request for all routes
 app.use(cors(corsConfig));
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
