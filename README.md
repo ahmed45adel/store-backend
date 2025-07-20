@@ -5,7 +5,7 @@ A monorepo e-commerce store designed for a seamless shopping experience and powe
 ## Features
 
 *   **User Authentication:** Secure login, signup, and logout.
-*   **"People Also Bought":** Product recommendations based on purchasing patterns.
+*   **People Also Bought:** Product recommendations based on purchasing patterns.
 *   **Persistent Cart:** Users can manage items before checkout.
 *   **Stripe Payments:** Secure and efficient payment processing.
 *   **Coupon Management:** Administrators can create and distribute discounts.
