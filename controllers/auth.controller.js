@@ -15,20 +15,20 @@ const generateTokens = (userId) => {
 };
 
 const storeRefreshToken = async (userId, refreshToken) => {
-	await redis.set(`refresh_token:${userId}`, refreshToken, "EX", 7 * 24 * 60 * 60); // 7days
+	await redis.set(`refresh_token:${userId}`, refreshToken, "EX", 7 * 24 * 60 * 60); // 7 days
 };
 
 const setCookies = (res, accessToken, refreshToken) => {
 	res.cookie("accessToken", accessToken, {
-		httpOnly: true, // prevent XSS attacks, cross site scripting attack
+		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
-		sameSite: "strict", // prevents CSRF attack, cross-site request forgery attack
+		sameSite: "strict",
 		maxAge: 15 * 60 * 1000, // 15 minutes
 	});
 	res.cookie("refreshToken", refreshToken, {
-		httpOnly: true, // prevent XSS attacks, cross site scripting attack
+		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
-		sameSite: "strict", // prevents CSRF attack, cross-site request forgery attack
+		sameSite: "strict",
 		maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 	});
 };
@@ -103,7 +103,7 @@ export const logout = async (req, res) => {
 	}
 };
 
-// this will refresh the access token
+// this will refresh the access token and rotate refresh token
 export const refreshToken = async (req, res) => {
 	try {
 		const refreshToken = req.cookies.refreshToken;
@@ -112,21 +112,33 @@ export const refreshToken = async (req, res) => {
 			return res.status(401).json({ message: "No refresh token provided" });
 		}
 
-		const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+		let decoded;
+		try {
+			decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+		} catch (err) {
+			if (err.name === "TokenExpiredError") {
+				return res.status(401).json({ message: "Refresh token expired" });
+			} else if (err.name === "JsonWebTokenError") {
+				return res.status(401).json({ message: "Invalid refresh token" });
+			} else {
+				throw err;
+			}
+		}
+
 		const storedToken = await redis.get(`refresh_token:${decoded.userId}`);
 
 		if (storedToken !== refreshToken) {
 			return res.status(401).json({ message: "Invalid refresh token" });
 		}
 
-		const accessToken = jwt.sign({ userId: decoded.userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+		// Generate new tokens (rotate refresh token)
+		const { accessToken: newAccessToken, refreshToken: newRefreshToken } = generateTokens(decoded.userId);
 
-		res.cookie("accessToken", accessToken, {
-			httpOnly: true,
-			secure: process.env.NODE_ENV === "production",
-			sameSite: "strict",
-			maxAge: 15 * 60 * 1000,
-		});
+		// Store new refresh token and overwrite the old one in Redis
+		await storeRefreshToken(decoded.userId, newRefreshToken);
+
+		// Set the new tokens in cookies
+		setCookies(res, newAccessToken, newRefreshToken);
 
 		res.json({ message: "Token refreshed successfully" });
 	} catch (error) {
