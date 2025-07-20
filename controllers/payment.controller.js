@@ -42,8 +42,7 @@ export const createCheckoutSession = async (req, res) => {
 			line_items: lineItems,
 			mode: "payment",
 			success_url: `${process.env.CLIENT_URL}/purchase-success?session_id={CHECKOUT_SESSION_ID}`,
-			// cancel_url: `${process.env.CLIENT_URL}/purchase-cancel`,
-			cancel_url: 'https://store-frontend-rose.vercel.app/purchase-cancel',
+			cancel_url: `${process.env.CLIENT_URL}/purchase-cancel`,
 			discounts: coupon
 				? [
 						{
