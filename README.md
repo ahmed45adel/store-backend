@@ -1,6 +1,6 @@
 # E-commerce Store with Admin Dashboard
 
-A monorepo e-commerce store designed for a seamless shopping experience and powerful administration.
+E-commerce store designed for a seamless shopping experience with admin and customer roles.
 
 ## Features
 
@@ -19,3 +19,6 @@ A monorepo e-commerce store designed for a seamless shopping experience and powe
 *   **Payments:** Stripe
 *   **Media:** Cloudinary
 *   **Deployment:** vercel
+
+<a href="https://github.com/ahmed45adel/store-backend" target="_blank">Backend Code</a>  
+<a href="https://store-frontend-rose.vercel.app" target="_blank">Deployed Project</a>
