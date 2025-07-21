@@ -36,5 +36,5 @@ This project requires the following environment variables. Make sure to replace 
 - `NODE_ENV`: The environment mode (`development`, `production`, etc.).
 
 
-<a href="https://github.com/ahmed45adel/store-backend" target="_blank">Backend Code Here</a>  
+<a href="https://github.com/ahmed45adel/store-frontend" target="_blank">Frontend Code Here</a>  
 <a href="https://store-frontend-rose.vercel.app" target="_blank">Deployed Project Here</a>
