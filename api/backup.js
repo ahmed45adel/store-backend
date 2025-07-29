@@ -2,7 +2,8 @@ import { redis } from '../lib/redis.js';
 
 export default async function handler(req, res) {
   try {
-    const result = await redis.save();
+    // Cleanup old analytics data (older than 60 days)
+    const result = await redis.zremrangebyscore('analytics', '-inf', Date.now() - 60*86400000);
     console.log(`[${new Date().toISOString()}] Backup completed`);
     return res.status(200).json({ success: true, result });
   } catch (error) {
